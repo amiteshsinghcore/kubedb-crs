@@ -39,6 +39,15 @@ spec:
         resources:
           requests:
             storage: 2Gi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      exporter:
+        port: 9091
+      serviceMonitor:
+        labels:
+          release: kube-prom-stack
+        interval: 30s
 
 ---
 apiVersion: v1

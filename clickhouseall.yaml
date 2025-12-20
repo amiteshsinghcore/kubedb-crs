@@ -23,12 +23,19 @@ spec:
 
   storageType: Durable
   storage:
-    storageClassName: csi-cinder-sc-retain
+    storageClassName: local-path
     accessModes:
       - ReadWriteOnce
     resources:
       requests:
         storage: 2Gi
+  monitor:
+    agent: prometheus.io/operator
+    prometheus:
+      serviceMonitor:
+        labels:
+          release: kube-prom-stack
+        interval: 30s
 ---
 apiVersion: v1
 kind: Service
