@@ -1,0 +1,16 @@
+annotations:
+  charts.openshift.io/name: kubedb-grafana-dashboards
+apiVersion: v2
+appVersion: v2025.12.9-rc.0
+description: A Helm chart for kubedb-grafana-dashboards by AppsCode
+home: https://github.com/kubedb
+icon: https://cdn.appscode.com/images/products/kubedb/kubedb-icon.png
+kubeVersion: '>=1.28.0'
+maintainers:
+- email: support@appscode.com
+  name: appscode
+name: kubedb-grafana-dashboards
+sources:
+- https://github.com/kubedb/installer
+type: application
+version: v2025.12.9-rc.0
