@@ -135,11 +135,6 @@ LB_IP=$(kubectl get svc mongo-rs -n mongo -o jsonpath='{.status.loadBalancer.ing
 
 # Connect with mongosh
 mongosh "mongodb://root:admin123@${LB_IP}:27017"
-```
-
-**Default Credentials:**
-- Username: `root`
-- Password: `admin123`
 
 ---
 
@@ -173,11 +168,6 @@ LB_IP=$(kubectl get svc pg-cluster-primary -n postgres -o jsonpath='{.status.loa
 
 # Connect with psql
 psql "postgresql://postgres:postgres123@${LB_IP}:5432/postgres"
-```
-
-**Default Credentials:**
-- Username: `postgres`
-- Password: `postgres123`
 
 ---
 
@@ -244,11 +234,7 @@ LB_IP=$(kubectl get svc redis-cluster-primary -n redis -o jsonpath='{.status.loa
 
 # Connect with redis-cli
 redis-cli -h ${LB_IP} -p 6379 -a redis123
-```
 
-**Default Credentials:**
-- Username: `default`
-- Password: `redis123`
 
 ---
 
@@ -285,7 +271,7 @@ CONTROLLER_IP=$(kubectl get svc kafka-controller-external -n kafka -o jsonpath='
 kafka-topics.sh --bootstrap-server ${BROKER_IP}:9092 \
   --command-config <(echo "security.protocol=SASL_PLAINTEXT
 sasl.mechanism=PLAIN
-sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='admin' password='admin123';") \
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='' password='';") \
   --create --topic test-topic --partitions 3 --replication-factor 1
 
 **Exposed Services:**
@@ -327,11 +313,7 @@ curl -u admin:clickhouse123 "http://${LB_IP}:8123/?query=SELECT%20version()"
 
 # Native Protocol (clickhouse-client)
 clickhouse-client --host ${LB_IP} --port 9000 --user admin --password clickhouse123
-```
 
-**Default Credentials:**
-- Username: `admin`
-- Password: `clickhouse123`
 
 **Exposed Ports:**
 - 8123: HTTP interface
