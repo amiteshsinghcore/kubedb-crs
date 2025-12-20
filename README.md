@@ -606,7 +606,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](../LIC
 **Amitesh Singh**
 
 - GitHub: [@amiteshsingh](https://github.com/amiteshsingh)
-- Email: amitesh@example.com
+- Email: amiteshhsingh@gmail.com
 
 ---
 
