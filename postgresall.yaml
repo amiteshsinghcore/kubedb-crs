@@ -65,7 +65,6 @@ spec:
           release: kube-prom-stack
         interval: 30s
 ---
----
 apiVersion: autoscaling.kubedb.com/v1alpha1
 kind: PostgresAutoscaler
 metadata:
