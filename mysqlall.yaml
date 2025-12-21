@@ -49,4 +49,34 @@ spec:
       serviceMonitor:
         labels:
           release: kube-prom-stack
-        interval: 30s          
+        interval: 30s        
+---
+apiVersion: autoscaling.kubedb.com/v1alpha1
+kind: MySQLAutoscaler
+metadata:
+  name: mysql-autoscaler
+  namespace: mysql
+spec:
+  databaseRef:
+    name: mysql-cluster
+
+  compute:
+    mysql:
+      minAllowed:
+        cpu: 400m
+        memory: 400Mi
+      maxAllowed:
+        cpu: "1"
+        memory: 1Gi
+      trigger: "On"
+      controlledResources:
+        - cpu
+        - memory
+      containerControlledValues: RequestsAndLimits
+
+  storage:
+    mysql:
+      expansionMode: Online
+      trigger: "On"
+      usageThreshold: 70
+      scalingThreshold: 60  

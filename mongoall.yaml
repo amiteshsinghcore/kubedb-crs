@@ -58,6 +58,32 @@ spec:
           release: kube-prom-stack
         interval: 30s
 ---
+apiVersion: autoscaling.kubedb.com/v1alpha1
+kind: MongoDBAutoscaler
+metadata:
+  name: mongo-rs-autoscaler
+  namespace: mongo
+spec:
+  databaseRef:
+    name: mongo-rs
+
+  compute:
+    replicaSet:
+      minAllowed:
+        cpu: 500m
+        memory: 1Gi
+      maxAllowed:
+        cpu: "2"
+        memory: 4Gi
+      trigger: "On"
+
+  storage:
+    replicaSet:
+      expansionMode: Online
+      trigger: "On"
+      usageThreshold: 70
+      scalingThreshold: 60
+---
 apiVersion: ops.kubedb.com/v1alpha1
 kind: MongoDBOpsRequest
 metadata:

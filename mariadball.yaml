@@ -1,28 +1,25 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: pg-custom-auth
-  namespace: postgres
+  name: mariadb-custom-auth
+  namespace: mariadb
 type: kubernetes.io/basic-auth
 stringData:
-  username: postgres
-  password: postgres123
+  username: root
+  password: mariadb123
 ---
 apiVersion: kubedb.com/v1
-kind: Postgres
+kind: MariaDB
 metadata:
-  name: pg-cluster
-  namespace: postgres
+  name: mariadb-cluster
+  namespace: mariadb
 spec:
-  version: "16.10"
+  version: "11.5.2"
+  replicas: 1
 
   authSecret:
-    name: pg-custom-auth
+    name: mariadb-custom-auth
     externallyManaged: true
-
-  replicas: 1
-  standbyMode: Hot
-  streamingMode: Asynchronous
 
   storageType: Durable
   storage:
@@ -33,11 +30,6 @@ spec:
       requests:
         storage: 2Gi
 
-  leaderElection:
-    leaseDurationSeconds: 15
-    renewDeadlineSeconds: 10
-    retryPeriodSeconds: 2
-
   serviceTemplates:
     - alias: primary
       metadata:
@@ -46,37 +38,30 @@ spec:
       spec:
         type: LoadBalancer
         ports:
-          - name: postgres
-            port: 5432
+          - name: mariadb
+            port: 3306
 
-    - alias: standby
-      spec:
-        type: ClusterIP
-        ports:
-          - name: postgres
-            port: 5432
   monitor:
     agent: prometheus.io/operator
     prometheus:
       exporter:
-        port: 9187
+        port: 9104
       serviceMonitor:
         labels:
           release: kube-prom-stack
         interval: 30s
 ---
----
 apiVersion: autoscaling.kubedb.com/v1alpha1
-kind: PostgresAutoscaler
+kind: MariaDBAutoscaler
 metadata:
-  name: pg-autoscaler
-  namespace: postgres
+  name: mariadb-autoscaler
+  namespace: mariadb
 spec:
   databaseRef:
-    name: pg-cluster
+    name: mariadb-cluster
 
   compute:
-    postgres:
+    mariadb:
       minAllowed:
         cpu: 500m
         memory: 1Gi
@@ -86,7 +71,7 @@ spec:
       trigger: "On"
 
   storage:
-    postgres:
+    mariadb:
       expansionMode: Online
       trigger: "On"
       usageThreshold: 70
