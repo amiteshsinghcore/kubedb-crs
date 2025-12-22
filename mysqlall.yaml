@@ -17,7 +17,6 @@ spec:
   version: "8.0.35"
   replicas: 1
 
-  # Use externally managed auth secret
   authSecret:
     name: mysql-custom-auth
     externallyManaged: true
@@ -49,7 +48,7 @@ spec:
       serviceMonitor:
         labels:
           release: kube-prom-stack
-        interval: 30s        
+        interval: 30s      
 ---
 apiVersion: autoscaling.kubedb.com/v1alpha1
 kind: MySQLAutoscaler
