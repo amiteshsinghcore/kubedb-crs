@@ -17,6 +17,10 @@ spec:
   version: "6.0.12"
   replicas: 1
 
+  authSecret:
+    name: mongo-custom-auth
+    externallyManaged: true
+
   replicaSet:
     name: rs0
 
@@ -83,19 +87,3 @@ spec:
       trigger: "On"
       usageThreshold: 70
       scalingThreshold: 60
----
-apiVersion: ops.kubedb.com/v1alpha1
-kind: MongoDBOpsRequest
-metadata:
-  name: mongo-rs-rotate-auth
-  namespace: mongo
-spec:
-  type: RotateAuth
-  databaseRef:
-    name: mongo-rs
-  authentication:
-    secretRef:
-      kind: Secret
-      name: mongo-custom-auth
-  timeout: 5m
-  apply: IfReady
