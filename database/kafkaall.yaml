@@ -100,11 +100,11 @@ spec:
   storage:
     broker:
       minAllowed:
-        cpu: 400m
-        memory: 400Mi
-      maxAllowed:
         cpu: "1"
         memory: 1Gi
+      maxAllowed:
+        cpu: "2"
+        memory: 4Gi
       trigger: "On"
       controlledResources:
         - cpu
