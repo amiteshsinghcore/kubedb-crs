@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dbaas-secret
+type: Opaque
+stringData:
+  COMPASS_BASE_URL: "http://20.174.0.114:32500"
+  KUBECONFIG_PATH: "kubeconfig.yaml"
+  MONGO_URI: "mongodb://sigma:password@compass-configdb.fluid.svc.cluster.local:27017/compass-config?authSource=admin"
+  INSTALL_SCRIPT_PATH: "./scripts/install_kubedb.sh"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbaas-orcastrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbaas-orcastrator
+  template:
+    metadata:
+      labels:
+        app: dbaas-orcastrator
+    spec:
+      containers:
+        - name: dbaas-orcastrator
+          image: kaa1bhairav/dbaas-orcastrator:v1
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8080
+
+          envFrom:
+            - secretRef:
+                name: dbaas-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbaas-orcastrator
+spec:
+  selector:
+    app: dbaas-orcastrator
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
